@@ -6,6 +6,7 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 const Login = () => {
   const [username, setUsername] = useState("");
+  const [isError, setIsError] = useState(false);
   const onSubmitUser = (e) => {
     e.preventDefault();
     setUsername("");
@@ -16,7 +17,11 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const credential = GoogleAuthProvider.credentialFromResult(result);
     } catch (error) {
-      console.log(error);
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      const email = error.customData.email;
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      setIsError(true);
     }
   };
 
@@ -59,6 +64,7 @@ const Login = () => {
             <FcGoogle className="ml-2 bg-whiteBg rounded p-1" size="25" />
           </button>
         </form>
+        {isError && <p>Something went wrong!!!</p>}
       </div>
     </div>
   );
