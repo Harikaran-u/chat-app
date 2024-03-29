@@ -6,9 +6,9 @@ import Login from "./components/Login";
 
 const App = () => {
   return (
-    <div className="flex justify-center items-center h-screen bg-appBg">
+    <>
       <Login />
-    </div>
+    </>
   );
 };
 
