@@ -7,6 +7,7 @@ export default {
       title: "#5755FE",
       label: "#03051E",
       btnWhite: "#fff",
+      username: "#5356FF",
     },
     backgroundColor: {
       appBg: "#B2A4FF",
@@ -15,6 +16,10 @@ export default {
       whiteBg: "#fff",
       transparent: "transparent",
       googleBg: "#5356FF",
+      chatBg: "#DDDDDD50",
+      chatHomeBg: "#EAE7AF",
+      membersBg: "#7B66FF",
+      chatBoxBg: "#03C988",
     },
   },
   plugins: [],
