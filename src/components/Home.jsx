@@ -2,8 +2,17 @@ import React from "react";
 import MembersBar from "./MembersBar";
 import ChatBox from "./ChatBox";
 import Header from "./Header";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Home = () => {
+  const navigate = useNavigate();
+  const userId = Cookies.get("userId");
+
+  if (!userId) {
+    navigate("/login", { replace: true });
+  }
+
   return (
     <div className="h-screen chat-home flex flex-col items-center p-10">
       <Header />

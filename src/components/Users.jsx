@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const tempPic =
   "https://res.cloudinary.com/diuvnny8c/image/upload/v1708271782/User-Profile-PNG-Image_eyvnnm.png";
@@ -49,9 +49,17 @@ const usersArray = [
 ];
 
 const Users = () => {
+  const [userSearch, setUserSearch] = useState("");
   return (
-    <div className="bg-whiteBg p-3 rounded-lg mt-2 h-4/5">
-      <p className="text-base font-semibold text-category mb-2">Person</p>
+    <div className="bg-whiteBg p-3 rounded-lg mt-2 ">
+      <input
+        type="search"
+        placeholder="search friends..."
+        className="outline-none p-1 rounded-sm text-xs font-semibold border-b-2 border-cyan-400 w-full"
+        value={userSearch}
+        onChange={(e) => setUserSearch(e.target.value)}
+      />
+      <p className="text-base font-semibold text-category mb-2">friends</p>
       <ul className="bg-whiteBg h-56 overflow-y-auto user-scroll">
         {usersArray.map((eachUser) => {
           return (

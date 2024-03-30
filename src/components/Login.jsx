@@ -1,15 +1,51 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosChatboxes } from "react-icons/io";
-import { auth, provider } from "../config/firebase";
+import { auth, provider, db } from "../config/firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { query, where, getDocs, collection, addDoc } from "firebase/firestore";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+
+const defaultProfilePic =
+  "https://res.cloudinary.com/diuvnny8c/image/upload/v1708271782/User-Profile-PNG-Image_eyvnnm.png";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [isError, setIsError] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const userId = Cookies.get("userId");
+
+    if (userId) {
+      navigate("/", { replace: true });
+    }
+  }, []);
+
   const onSubmitUser = (e) => {
     e.preventDefault();
+    loginUser();
     setUsername("");
+  };
+
+  const loginUser = async () => {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("username", "==", username));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      const userDoc = { username, profilePic: defaultProfilePic };
+      try {
+        const userData = await addDoc(usersRef, userDoc);
+        Cookies.set("userId", userData.id, { expires: 7 });
+        navigate("/", { replace: true });
+        console.log("New user created successfully!");
+      } catch (error) {
+        console.error("Error creating new user:", error);
+      }
+    } else {
+      console.log("Username is already taken");
+    }
   };
 
   const handleSignInWithGoogle = async () => {
