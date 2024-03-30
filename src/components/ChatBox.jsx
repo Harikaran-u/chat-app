@@ -5,8 +5,8 @@ import MessagesList from "./MessagesList";
 const ChatBox = () => {
   return (
     <div className="bg-chatBoxBg ml-4 p-4 rounded-xl w-full">
-      <div className="bg-whiteBg rounded-lg p-4 h-full">
-        <div className="flex justify-between p-1 border-b-2 border-b-gray-200 rounded">
+      <div className="rounded-lg p-4 h-full chat-bg flex flex-col">
+        <div className="flex items-center justify-between p-1 border-b-2 bg-whiteBg border-b-cyan-400 rounded">
           <div className="flex items-center ml-1">
             <img
               src="https://res.cloudinary.com/diuvnny8c/image/upload/v1708271782/User-Profile-PNG-Image_eyvnnm.png"
@@ -24,6 +24,13 @@ const ChatBox = () => {
           />
         </div>
         <MessagesList />
+        <div className="flex items-center">
+          <input
+            type="text"
+            placeholder="..."
+            className="rounded-xl p-1 font-xs text-label font-semibold"
+          />
+        </div>
       </div>
     </div>
   );

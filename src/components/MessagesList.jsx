@@ -18,9 +18,9 @@ const MessagesList = () => {
             key={index}
             className={`${
               eachMsg.sender_id !== currentUserId
-                ? "self-start bg-appBg rounded-tl-2xl"
-                : "self-end bg-btnBg rounded-br-2xl"
-            } text-sm  p-2 rounded`}
+                ? "self-start bg-receiverBg rounded-bl-sm rounded-tr-sm"
+                : "self-end bg-senderBg rounded-br-sm rounded-tl-sm"
+            } text-sm  p-2 rounded-2xl border-solid`}
           >
             {eachMsg.msg}
           </p>

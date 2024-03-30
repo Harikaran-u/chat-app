@@ -25,6 +25,8 @@ export default {
       chatBannerBg: "#F1F6F9",
       membersBg: "#7B66FF",
       chatBoxBg: "#03C988",
+      senderBg: "#4CCD99",
+      receiverBg: "#C499F3",
     },
   },
   plugins: [],

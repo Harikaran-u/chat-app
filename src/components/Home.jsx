@@ -5,7 +5,7 @@ import Header from "./Header";
 
 const Home = () => {
   return (
-    <div className="h-screen bg-chatHomeBg flex flex-col items-center p-10">
+    <div className="h-screen chat-home flex flex-col items-center p-10">
       <Header />
       <div className="bg-chatBannerBg flex rounded-3xl shadow-2xl p-4 mt-2 w-full h-3/4 backdrop-blur-md">
         <MembersBar />
