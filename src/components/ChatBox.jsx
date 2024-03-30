@@ -2,7 +2,7 @@ import React from "react";
 
 const ChatBox = () => {
   return (
-    <div className="flex-1 bg-chatBoxBg ml-4 p-4 rounded-xl">
+    <div className="bg-chatBoxBg ml-4 p-4 rounded-xl w-full">
       chatbox-welcome
     </div>
   );
