@@ -4,7 +4,7 @@ import Users from "./Users";
 
 const MembersBar = () => {
   return (
-    <div className="bg-membersBg rounded-lg p-4 w-2/4">
+    <div className="bg-membersBg rounded-lg p-4 w-2/4 h-full">
       <Profile />
       <Users />
     </div>

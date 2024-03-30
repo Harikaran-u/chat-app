@@ -9,9 +9,9 @@ const Profile = () => {
           src="https://res.cloudinary.com/diuvnny8c/image/upload/v1708271782/User-Profile-PNG-Image_eyvnnm.png"
           className="w-11 h-9 rounded-full"
         />
-        <p className="ml-2 text-username text-sm font-semibold">Sanju</p>
+        <p className="ml-1 text-username text-sm font-semibold">Sanju</p>
       </div>
-      <BsThreeDotsVertical size="25" className="cursor-pointer" />
+      <BsThreeDotsVertical color="gray" size="20" className="cursor-pointer" />
     </div>
   );
 };
