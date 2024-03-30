@@ -25,13 +25,34 @@ const usersArray = [
     lastSeen: "Today",
     time: "10:02am",
   },
+  {
+    name: "user4",
+    profile: tempPic,
+    lastMessage: "Hello!!!",
+    lastSeen: "Yesterday",
+    time: "11:30pm",
+  },
+  {
+    name: "user5",
+    profile: tempPic,
+    lastMessage: "oii!!!",
+    lastSeen: "Today",
+    time: "1:10am",
+  },
+  {
+    name: "user6",
+    profile: tempPic,
+    lastMessage: "sip!!",
+    lastSeen: "Today",
+    time: "10:02am",
+  },
 ];
 
 const Users = () => {
   return (
     <div className="bg-whiteBg p-3 rounded-lg mt-2 h-4/5">
       <p className="text-base font-semibold text-category mb-2">Person</p>
-      <ul>
+      <ul className="bg-whiteBg h-56 overflow-y-auto user-scroll">
         {usersArray.map((eachUser) => {
           return (
             <li
