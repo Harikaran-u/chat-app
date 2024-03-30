@@ -30,6 +30,7 @@ export default {
       receiverBg: "#C499F3",
       sendBtnBg: "#5FBDFF",
       selectUserBg: "#7B66FF",
+      toggleBg: "#DCBFFF",
     },
   },
   plugins: [],
