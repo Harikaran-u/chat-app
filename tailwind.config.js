@@ -12,6 +12,7 @@ export default {
       personName: "#865DFF",
       lastMsg: "#152D35",
       lastSeen: "#C7C8CC",
+      textLight: "#FFF7F1",
     },
     backgroundColor: {
       appBg: "#B2A4FF",
@@ -28,6 +29,7 @@ export default {
       senderBg: "#4CCD99",
       receiverBg: "#C499F3",
       sendBtnBg: "#5FBDFF",
+      selectUserBg: "#7B66FF",
     },
   },
   plugins: [],
