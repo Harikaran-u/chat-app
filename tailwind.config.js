@@ -11,7 +11,8 @@ export default {
       category: "#1AACAC",
       personName: "#865DFF",
       lastMsg: "#152D35",
-      lastSeen: "#C7C8CC",
+      online: "#65C18C",
+      offline: "#FF6363",
       textLight: "#FFF7F1",
     },
     backgroundColor: {

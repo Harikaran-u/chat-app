@@ -10,11 +10,11 @@ import {
   getDoc,
   setDoc,
   onSnapshot,
-  collection,
 } from "firebase/firestore";
 import { db } from "../config/firebase";
 import MessagesList from "./MessagesList";
 import Cookies from "js-cookie";
+import { formatRelative } from "date-fns";
 
 const ChatBox = () => {
   const [isSelectedUser, setIsSelectedUser] = useState(true);
@@ -22,6 +22,7 @@ const ChatBox = () => {
   const [messageId, setMessageId] = useState(null);
   const [currentUserId, setCurrentUserId] = useState("");
   const [selectedUserId, setSelectedUserId] = useState("");
+  const [msgSent, setMsgSent] = useState(false);
   const [conversationList, setConversationList] = useState([]);
   const selectedUser = useSelector((state) => state.chats.selectedUser);
   const isDark = useSelector((state) => state.chats.isDark);
@@ -44,12 +45,10 @@ const ChatBox = () => {
   }, [selectedUser]);
 
   useEffect(() => {
-    // Subscribe to real-time updates
     if (messageId) {
       const documentRef = doc(db, "messages", messageId);
       const unsubscribe = onSnapshot(documentRef, (docSnapshot) => {
         if (docSnapshot.exists()) {
-          console.log(docSnapshot.data().messagesList);
           setConversationList(docSnapshot.data().messagesList);
         } else {
           console.log("Document does not exist");
@@ -58,7 +57,15 @@ const ChatBox = () => {
 
       return () => unsubscribe();
     }
-  }, [db]);
+  }, [db, msgSent]);
+
+  const getFormattedDate = (timestamp) => {
+    const date = new Date(
+      timestamp.seconds * 1000 + timestamp.nanoseconds / 1e6
+    );
+    const formattedDate = formatRelative(date, new Date());
+    return formattedDate;
+  };
 
   const getMessagesList = async (id) => {
     if (id) {
@@ -100,8 +107,8 @@ const ChatBox = () => {
   const handleUserInputSubmit = (e) => {
     e.preventDefault();
     submitMsgDocument();
-    // getMessagesList(messageId);
     setUserInputMsg("");
+    setMsgSent(true);
   };
 
   return (
@@ -125,8 +132,14 @@ const ChatBox = () => {
                 <p className="text-username text-sm font-semibold">
                   {selectedUser.username}
                 </p>
-                <p className="text-lastSeen text-xs">
-                  {selectedUser.isOnline ? "online" : "offline"}
+                <p
+                  className={`${
+                    selectedUser.isOnline ? "text-online" : "text-offline"
+                  } text-xs font-semibold`}
+                >
+                  {selectedUser.isOnline
+                    ? "online"
+                    : `last seen ${getFormattedDate(selectedUser.logoutTime)}`}
                 </p>
               </div>
             </div>

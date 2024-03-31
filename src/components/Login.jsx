@@ -3,7 +3,15 @@ import { FcGoogle } from "react-icons/fc";
 import { IoIosChatboxes } from "react-icons/io";
 import { auth, provider, db } from "../config/firebase";
 import { signInWithPopup } from "firebase/auth";
-import { query, where, getDocs, collection, addDoc } from "firebase/firestore";
+import {
+  query,
+  where,
+  getDocs,
+  collection,
+  addDoc,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
@@ -42,6 +50,7 @@ const Login = () => {
         username: loginUserName,
         profilePic: profileUrl,
         isOnline: true,
+        loginTime: new Date(),
       };
       try {
         const userData = await addDoc(usersRef, userDoc);
@@ -56,6 +65,16 @@ const Login = () => {
       querySnapshot.forEach((doc) => {
         userData = { id: doc.id, ...doc.data() };
       });
+      try {
+        const docRef = doc(db, "users", userData.id);
+        await updateDoc(docRef, {
+          isOnline: true,
+          loginTime: new Date(),
+        });
+      } catch (error) {
+        console.log(error);
+      }
+
       Cookies.set("userId", userData.id, { expires: 7 });
       navigate("/", { replace: true });
     }
