@@ -1,39 +1,147 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoSend } from "react-icons/io5";
+import { useSelector } from "react-redux";
+import {
+  Timestamp,
+  arrayUnion,
+  updateDoc,
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
+import { db } from "../config/firebase";
 import MessagesList from "./MessagesList";
+import Cookies from "js-cookie";
 
 const ChatBox = () => {
+  const [isSelectedUser, setIsSelectedUser] = useState(true);
+  const [userInputMsg, setUserInputMsg] = useState("");
+  const [messageId, setMessageId] = useState(null);
+  const [currentUserId, setCurrentUserId] = useState("");
+  const [selectedUserId, setSelectedUserId] = useState("");
+  const [conversationList, setConversationList] = useState([]);
+  const selectedUser = useSelector((state) => state.chats.selectedUser);
+  const isDark = useSelector((state) => state.chats.isDark);
+
+  useEffect(() => {
+    const userId = Cookies.get("userId");
+    const selectedUserId = selectedUser.doc_id;
+    setCurrentUserId(userId);
+    setSelectedUserId(selectedUserId);
+    userId > selectedUserId
+      ? setMessageId(userId + selectedUserId)
+      : setMessageId(selectedUserId + userId);
+
+    if (selectedUser.username !== undefined) {
+      setIsSelectedUser(false);
+    }
+  }, [selectedUser]);
+
+  useEffect(() => {
+    getMessagesList();
+  }, []);
+
+  const getMessagesList = async () => {
+    if (messageId) {
+      const messageRef = doc(db, "messages", messageId);
+      const messageDocSnap = await getDoc(messageRef);
+      if (messageDocSnap.exists()) {
+        setConversationList(messageDocSnap.data().messagesList);
+      } else {
+        console.log("no messages found");
+      }
+    }
+  };
+
+  const submitMsgDocument = async () => {
+    try {
+      const messageRef = doc(db, "messages", messageId);
+      const messageDocSnap = await getDoc(messageRef);
+
+      const messageDoc = {
+        messageText: userInputMsg,
+        createdAt: Timestamp.now(),
+        senderId: currentUserId,
+        receiverId: selectedUserId,
+      };
+      if (messageDocSnap.exists()) {
+        console.log(messageDocSnap.data());
+        await updateDoc(messageRef, {
+          messagesList: arrayUnion(messageDoc),
+        });
+      } else {
+        await setDoc(messageRef, {
+          messagesList: arrayUnion(messageDoc),
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUserInputSubmit = (e) => {
+    e.preventDefault();
+    submitMsgDocument();
+    setUserInputMsg("");
+  };
+
   return (
     <div className="rounded-lg ml-2 p-4 h-full chat-bg flex flex-col w-full relative">
-      <div className="flex items-center justify-between p-1 border-b-2 bg-whiteBg border-b-cyan-400 rounded sticky w-full">
-        <div className="flex items-center ml-1">
-          <img
-            src="https://res.cloudinary.com/diuvnny8c/image/upload/v1708271782/User-Profile-PNG-Image_eyvnnm.png"
-            className="w-12 h-9"
-          />
-          <div className="flex flex-col">
-            <p className="text-username text-sm font-semibold">Kumar</p>
-            <p className="text-lastSeen text-xs">Online</p>
+      {isSelectedUser && (
+        <div className="flex justify-center items-center rounded-3xl chat-info h-full w-full"></div>
+      )}
+      {!isSelectedUser && (
+        <>
+          <div
+            className={`${
+              isDark ? "bg-DarkBg" : "bg-whiteBg"
+            } flex items-center justify-between p-1 border-b-2 border-b-cyan-400 rounded sticky w-full`}
+          >
+            <div className="flex items-center ml-1">
+              <img
+                src={selectedUser.profilePic}
+                className="w-9 h-9 rounded-full"
+              />
+              <div className="flex flex-col ml-1">
+                <p className="text-username text-sm font-semibold">
+                  {selectedUser.username}
+                </p>
+                <p className="text-lastSeen text-xs">online</p>
+              </div>
+            </div>
+            <BsThreeDotsVertical
+              color="gray"
+              size="20"
+              className="cursor-pointer"
+            />
           </div>
-        </div>
-        <BsThreeDotsVertical
-          color="gray"
-          size="20"
-          className="cursor-pointer"
-        />
-      </div>
-      <MessagesList />
-      <div className="flex items-center justify-between w-full bg-whiteBg rounded-md p-1">
-        <input
-          type="text"
-          placeholder="type something..."
-          className="p-1 text-xs text-label font-semibold bg-transparent w-4/5 outline-none"
-        />
-        <button className="bg-sendBtnBg p-1 w-12 rounded flex justify-center">
-          <IoSend size="20" />
-        </button>
-      </div>
+          <MessagesList conversationList={conversationList} />
+          <form
+            className={`${
+              isDark ? "bg-DarkBg" : "bg-whiteBg"
+            } flex items-center justify-between w-full rounded-md p-1 sticky top-3/4`}
+            onSubmit={handleUserInputSubmit}
+          >
+            <input
+              type="text"
+              placeholder="type something..."
+              className={`${
+                isDark ? "text-btnWhite" : "text-label"
+              } p-1 text-xs font-semibold bg-transparent w-4/5 outline-none`}
+              value={userInputMsg}
+              onChange={(e) => setUserInputMsg(e.target.value)}
+            />
+            <button
+              className="bg-sendBtnBg p-1 w-12 rounded flex justify-center disabled:bg-opacity-20 disabled:cursor-not-allowed"
+              type="submit"
+              disabled={userInputMsg === ""}
+            >
+              <IoSend size="20" />
+            </button>
+          </form>
+        </>
+      )}
     </div>
   );
 };

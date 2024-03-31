@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MembersBar from "./MembersBar";
 import ChatBox from "./ChatBox";
 import Header from "./Header";
@@ -9,11 +9,14 @@ import { useSelector } from "react-redux";
 const Home = () => {
   const navigate = useNavigate();
   const userId = Cookies.get("userId");
+
   const isDark = useSelector((state) => state.chats.isDark);
 
-  if (!userId) {
-    navigate("/login", { replace: true });
-  }
+  useEffect(() => {
+    if (!userId) {
+      navigate("/login", { replace: true });
+    }
+  }, []);
 
   return (
     <div className="h-screen chat-home flex flex-col items-center p-10">

@@ -3,7 +3,8 @@ import { db } from "../config/firebase";
 import { getDocs, collection } from "firebase/firestore";
 import Cookies from "js-cookie";
 import Loader from "./Loader";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { updateSelectedUser } from "../context/chatSlice";
 
 const Users = () => {
   const [userSearch, setUserSearch] = useState("");
@@ -11,6 +12,7 @@ const Users = () => {
   const [selectedUser, setSelectedUser] = useState({ doc_id: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const isDark = useSelector((state) => state.chats.isDark);
+  const dispatch = useDispatch();
 
   const userId = Cookies.get("userId");
   useEffect(() => {
@@ -43,6 +45,7 @@ const Users = () => {
 
   const handleSelectUser = (user) => {
     setSelectedUser(user);
+    dispatch(updateSelectedUser(user));
   };
 
   const filteredUsersList = usersList.filter((eachUser) =>
@@ -53,7 +56,7 @@ const Users = () => {
     <div
       className={`${
         isDark ? "bg-DarkBg" : "bg-whiteBg"
-      } p-3 rounded-lg mt-2 h-full`}
+      } p-3 rounded-lg mt-2 h-5/6`}
     >
       <input
         type="search"
@@ -64,12 +67,12 @@ const Users = () => {
         value={userSearch}
         onChange={handleUserSearch}
       />
-      <p className="text-base font-semibold text-category mb-2">Users</p>
+      <p className="text-base font-semibold text-category mb-2">users</p>
       {!isLoading && (
         <ul
           className={`${
             isDark ? "bg-DarkBg" : "bg-whiteBg"
-          } h-56 overflow-y-auto user-scroll p-1 rounded`}
+          } h-4/5 overflow-y-auto hide-scroll-bar p-1 rounded`}
         >
           {filteredUsersList !== null &&
             filteredUsersList.map((eachUser) => {

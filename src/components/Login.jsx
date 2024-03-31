@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosChatboxes } from "react-icons/io";
 import { auth, provider, db } from "../config/firebase";
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
 import { query, where, getDocs, collection, addDoc } from "firebase/firestore";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
@@ -28,13 +28,16 @@ const Login = () => {
     setUsername("");
   };
 
-  const loginUser = async () => {
+  const loginUser = async (
+    loginUserName = username,
+    profileUrl = defaultProfilePic
+  ) => {
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("username", "==", username));
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
-      const userDoc = { username, profilePic: defaultProfilePic };
+      const userDoc = { username: loginUserName, profilePic: profileUrl };
       try {
         const userData = await addDoc(usersRef, userDoc);
         Cookies.set("userId", userData.id, { expires: 7 });
@@ -51,12 +54,10 @@ const Login = () => {
   const handleSignInWithGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const displayName = result.user.displayName;
+      const profileUrl = result.user.photoURL;
+      loginUser(displayName, profileUrl);
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      const email = error.customData.email;
-      const credential = GoogleAuthProvider.credentialFromError(error);
       setIsError(true);
     }
   };

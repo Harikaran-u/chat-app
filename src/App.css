@@ -16,10 +16,12 @@
   background-position: center;
 }
 
-.hide-bar::-webkit-scrollbar {
+.hide-scroll-bar::-webkit-scrollbar {
   width: 0;
 }
 
-.user-scroll::-webkit-scrollbar {
-  width: 0;
+.chat-info {
+  background-image: url(https://res.cloudinary.com/diuvnny8c/image/upload/v1711867087/10117764_4346281_qhpfko.jpg);
+  background-size: cover;
+  background-position: center;
 }
