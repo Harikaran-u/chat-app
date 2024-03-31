@@ -1,7 +1,7 @@
 import React from "react";
 import { MdOutlineClose, MdLightMode, MdDarkMode } from "react-icons/md";
 import { useSelector, useDispatch } from "react-redux";
-import { updateTheme } from "../context/chatSlice";
+import { resetState, updateTheme } from "../context/chatSlice";
 import Cookies from "js-cookie";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
@@ -24,6 +24,7 @@ const UserMenu = (props) => {
           logoutTime: new Date(),
         });
         Cookies.remove("userId");
+        dispatch(resetState());
         navigate("/login", { replace: true });
       } catch (error) {
         console.log(error);

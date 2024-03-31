@@ -19,9 +19,16 @@ const chatSlice = createSlice({
     updateSelectedUser(state, action) {
       state.selectedUser = action.payload;
     },
+    resetState(state) {
+      return initialSlice;
+    },
   },
 });
 
-export const { updateTheme, updateCurrentUser, updateSelectedUser } =
-  chatSlice.actions;
+export const {
+  updateTheme,
+  updateCurrentUser,
+  updateSelectedUser,
+  resetState,
+} = chatSlice.actions;
 export default chatSlice.reducer;

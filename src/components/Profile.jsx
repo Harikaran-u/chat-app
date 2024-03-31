@@ -22,7 +22,6 @@ const Profile = () => {
       const docSnap = await getDoc(userDoc);
       if (docSnap.exists()) {
         setUserData(docSnap.data());
-        console.log(docSnap.data());
       } else {
         console.log("No such document!");
       }

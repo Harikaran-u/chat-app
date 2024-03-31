@@ -14,6 +14,8 @@ export default {
       online: "#65C18C",
       offline: "#FF6363",
       textLight: "#FFF7F1",
+      onlineDot: "#65C18C",
+      offlineDot: "#FF7BA9",
     },
     backgroundColor: {
       appBg: "#B2A4FF",

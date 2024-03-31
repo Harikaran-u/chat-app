@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../config/firebase";
-import { getDocs, collection } from "firebase/firestore";
-import Cookies from "js-cookie";
-import Loader from "./Loader";
+import { getDocs, collection, onSnapshot, doc } from "firebase/firestore";
 import { useSelector, useDispatch } from "react-redux";
 import { updateSelectedUser } from "../context/chatSlice";
+import { GoDotFill } from "react-icons/go";
+import Cookies from "js-cookie";
+import Loader from "./Loader";
 
 const Users = () => {
   const [userSearch, setUserSearch] = useState("");
@@ -15,6 +16,7 @@ const Users = () => {
   const dispatch = useDispatch();
 
   const userId = Cookies.get("userId");
+
   useEffect(() => {
     setIsLoading(true);
     getUsers();
@@ -38,6 +40,28 @@ const Users = () => {
     }
   };
 
+  useEffect(() => {
+    const documentRef = collection(db, "users");
+    let usersData = [];
+    const unsubscribe = onSnapshot(documentRef, (snapshot) => {
+      if (snapshot) {
+        snapshot.forEach((eachDoc) => {
+          if (userId !== eachDoc.id) {
+            let userData = { doc_id: eachDoc.id, ...eachDoc.data() };
+            usersData.push(userData);
+          }
+        });
+
+        setUsersList([...usersData]);
+        usersData = [];
+      } else {
+        console.log("Document does not exist");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [db]);
+
   const handleUserSearch = (e) => {
     const value = e.target.value;
     setUserSearch(value);
@@ -45,7 +69,12 @@ const Users = () => {
 
   const handleSelectUser = (user) => {
     setSelectedUser(user);
-    dispatch(updateSelectedUser(user));
+    const selectUser = {
+      ...user,
+      loginTime: user.loginTime.toMillis(),
+      logoutTime: user.logoutTime?.toMillis(),
+    };
+    dispatch(updateSelectedUser(selectUser));
     setUserSearch("");
   };
 
@@ -102,12 +131,18 @@ const Users = () => {
                       </p>
                     </div>
                   </div>
-                  {/* <div className="flex items-center">
-                <p className="text-xs mr-1 text-lastSeen">
-                  {eachUser.lastSeen}
-                </p>
-                <p className="text-xs text-lastSeen">{eachUser.time}</p>
-              </div> */}
+                  <div className="flex items-center">
+                    <p
+                      className={`text-xs font-semibold mr-1 text-lastSeen  ${
+                        eachUser.isOnline
+                          ? "animate-pulse text-onlineDot"
+                          : "text-offlineDot"
+                      }`}
+                    >
+                      <GoDotFill size="20" />
+                    </p>
+                    {/* <p className="text-xs text-lastSeen">{eachUser.time}</p> */}
+                  </div>
                 </li>
               );
             })}

@@ -60,9 +60,7 @@ const ChatBox = () => {
   }, [db, msgSent]);
 
   const getFormattedDate = (timestamp) => {
-    const date = new Date(
-      timestamp.seconds * 1000 + timestamp.nanoseconds / 1e6
-    );
+    const date = new Date(timestamp);
     const formattedDate = formatRelative(date, new Date());
     return formattedDate;
   };
@@ -74,6 +72,7 @@ const ChatBox = () => {
       if (messageDocSnap.exists()) {
         setConversationList(messageDocSnap.data().messagesList);
       } else {
+        setConversationList([]);
         console.log("no messages found");
       }
     }
