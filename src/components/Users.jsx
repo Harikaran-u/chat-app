@@ -46,6 +46,7 @@ const Users = () => {
   const handleSelectUser = (user) => {
     setSelectedUser(user);
     dispatch(updateSelectedUser(user));
+    setUserSearch("");
   };
 
   const filteredUsersList = usersList.filter((eachUser) =>

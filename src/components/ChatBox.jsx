@@ -9,6 +9,8 @@ import {
   doc,
   getDoc,
   setDoc,
+  onSnapshot,
+  collection,
 } from "firebase/firestore";
 import { db } from "../config/firebase";
 import MessagesList from "./MessagesList";
@@ -29,22 +31,38 @@ const ChatBox = () => {
     const selectedUserId = selectedUser.doc_id;
     setCurrentUserId(userId);
     setSelectedUserId(selectedUserId);
-    userId > selectedUserId
-      ? setMessageId(userId + selectedUserId)
-      : setMessageId(selectedUserId + userId);
+    const messagesDocId =
+      userId > selectedUserId
+        ? userId + selectedUserId
+        : selectedUserId + userId;
+    setMessageId(messagesDocId);
 
     if (selectedUser.username !== undefined) {
       setIsSelectedUser(false);
     }
+    getMessagesList(messagesDocId);
   }, [selectedUser]);
 
   useEffect(() => {
-    getMessagesList();
-  }, []);
-
-  const getMessagesList = async () => {
+    // Subscribe to real-time updates
     if (messageId) {
-      const messageRef = doc(db, "messages", messageId);
+      const documentRef = doc(db, "messages", messageId);
+      const unsubscribe = onSnapshot(documentRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          console.log(docSnapshot.data().messagesList);
+          setConversationList(docSnapshot.data().messagesList);
+        } else {
+          console.log("Document does not exist");
+        }
+      });
+
+      return () => unsubscribe();
+    }
+  }, [db]);
+
+  const getMessagesList = async (id) => {
+    if (id) {
+      const messageRef = doc(db, "messages", id);
       const messageDocSnap = await getDoc(messageRef);
       if (messageDocSnap.exists()) {
         setConversationList(messageDocSnap.data().messagesList);
@@ -66,7 +84,6 @@ const ChatBox = () => {
         receiverId: selectedUserId,
       };
       if (messageDocSnap.exists()) {
-        console.log(messageDocSnap.data());
         await updateDoc(messageRef, {
           messagesList: arrayUnion(messageDoc),
         });
@@ -83,6 +100,7 @@ const ChatBox = () => {
   const handleUserInputSubmit = (e) => {
     e.preventDefault();
     submitMsgDocument();
+    // getMessagesList(messageId);
     setUserInputMsg("");
   };
 

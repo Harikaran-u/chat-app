@@ -1,42 +1,50 @@
-import React from "react";
-
-// const messsages = [
-//   { sender_id: 1, msg: "Hello nanba!!!", time: "10.00am", day: "today" },
-//   { sender_id: 2, msg: "Hi daa", time: "10.02am", day: "today" },
-//   { sender_id: 1, msg: "epdi irukka!!!", time: "10.05am", day: "today" },
-//   { sender_id: 2, msg: "nalla iruken!!!", time: "10.10am", day: "today" },
-//   { sender_id: 1, msg: "saptaya", time: "10.15am", day: "today" },
-//   { sender_id: 2, msg: "sapten", time: "10.16am", day: "today" },
-//   { sender_id: 1, msg: "nee", time: "10.18am", day: "today" },
-//   { sender_id: 2, msg: "yes! nanum", time: "10.20am", day: "today" },
-//   { sender_id: 1, msg: "match ennachu", time: "10.35am", day: "today" },
-//   { sender_id: 2, msg: "rcb loss", time: "10.40am", day: "today" },
-//   { sender_id: 1, msg: "podu maja", time: "10.45am", day: "today" },
-//   { sender_id: 2, msg: "ama mameh!!!", time: "10.50am", day: "today" },
-// ];
-
-const currentUserId = 1;
+import React, { useEffect, useRef } from "react";
+import Cookies from "js-cookie";
+import { format } from "date-fns";
 
 const MessagesList = (props) => {
-  const conversationList = props;
-  console.log(conversationList);
+  const currentUserId = Cookies.get("userId");
+  const { conversationList } = props;
+
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [conversationList]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const getFormattedTime = (timestamp) => {
+    const milliseconds =
+      timestamp.seconds * 1000 + Math.round(timestamp.nanoseconds / 1e6);
+    const dateFromTimestamp = new Date(milliseconds);
+    const formattedTime = format(dateFromTimestamp, "hh:mm aa");
+    return formattedTime;
+  };
+
   return (
-    <div className="m-2 p-2 flex flex-col scroll-smooth overflow-y-auto hide-scroll-bar">
-      {/* {messsages.map((eachMsg, index) => {
+    <ul className="m-2 p-2 flex flex-col scroll-smooth overflow-y-auto hide-scroll-bar">
+      {conversationList.map((eachMsg) => {
         return (
-          <p
-            key={index}
+          <li
+            key={eachMsg.createdAt}
             className={`${
-              eachMsg.sender_id !== currentUserId
-                ? "self-start bg-receiverBg rounded-bl-sm rounded-tr-sm"
-                : "self-end bg-senderBg rounded-br-sm rounded-tl-sm"
-            } text-sm  p-2 rounded-2xl border-solid`}
+              eachMsg.senderId !== currentUserId
+                ? "self-start bg-receiverBg rounded-bl-sm rounded-tr-sm mb-2"
+                : "self-end bg-senderBg rounded-br-sm rounded-tl-sm mt-2"
+            } p-2 rounded-2xl flex flex-col items-end`}
           >
-            {eachMsg.msg}
-          </p>
+            <span className="text-sm">{eachMsg.messageText}</span>
+            <span className="delivery-time">
+              {getFormattedTime(eachMsg.createdAt)}
+            </span>
+          </li>
         );
-      })} */}
-    </div>
+      })}
+      <div ref={messagesEndRef} />
+    </ul>
   );
 };
 

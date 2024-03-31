@@ -25,3 +25,9 @@
   background-size: cover;
   background-position: center;
 }
+
+.delivery-time {
+  font-size: 8px;
+  font-weight: 600;
+  color: #31363f;
+}
