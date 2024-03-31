@@ -125,7 +125,9 @@ const ChatBox = () => {
                 <p className="text-username text-sm font-semibold">
                   {selectedUser.username}
                 </p>
-                <p className="text-lastSeen text-xs">online</p>
+                <p className="text-lastSeen text-xs">
+                  {selectedUser.isOnline ? "online" : "offline"}
+                </p>
               </div>
             </div>
             <BsThreeDotsVertical

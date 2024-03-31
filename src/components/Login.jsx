@@ -14,6 +14,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
+
   useEffect(() => {
     const userId = Cookies.get("userId");
 
@@ -37,7 +38,11 @@ const Login = () => {
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
-      const userDoc = { username: loginUserName, profilePic: profileUrl };
+      const userDoc = {
+        username: loginUserName,
+        profilePic: profileUrl,
+        isOnline: true,
+      };
       try {
         const userData = await addDoc(usersRef, userDoc);
         Cookies.set("userId", userData.id, { expires: 7 });
@@ -47,7 +52,12 @@ const Login = () => {
         console.error("Error creating new user:", error);
       }
     } else {
-      console.log("Username is already taken");
+      let userData = null;
+      querySnapshot.forEach((doc) => {
+        userData = { id: doc.id, ...doc.data() };
+      });
+      Cookies.set("userId", userData.id, { expires: 7 });
+      navigate("/", { replace: true });
     }
   };
 
