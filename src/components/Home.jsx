@@ -4,10 +4,12 @@ import ChatBox from "./ChatBox";
 import Header from "./Header";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
 
 const Home = () => {
   const navigate = useNavigate();
   const userId = Cookies.get("userId");
+  const isDark = useSelector((state) => state.chats.isDark);
 
   if (!userId) {
     navigate("/login", { replace: true });
@@ -16,7 +18,11 @@ const Home = () => {
   return (
     <div className="h-screen chat-home flex flex-col items-center p-10">
       <Header />
-      <div className="bg-chatBannerBg flex rounded-3xl shadow-2xl p-4 mt-2 w-full h-3/4 backdrop-blur-md">
+      <div
+        className={`${
+          isDark ? "bg-DarkBg" : "bg-chatBannerBg"
+        } flex rounded-3xl shadow-2xl p-4 mt-2 w-full h-3/4 backdrop-blur-md`}
+      >
         <MembersBar />
         <ChatBox />
       </div>

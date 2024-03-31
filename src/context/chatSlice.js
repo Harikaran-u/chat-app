@@ -11,7 +11,7 @@ const chatSlice = createSlice({
   initialState: initialSlice,
   reducers: {
     updateTheme(state) {
-      state.isDark(!state.isDark);
+      state.isDark = !state.isDark;
     },
     updateCurrentUser(state, action) {
       state.currentUser = action.payload;

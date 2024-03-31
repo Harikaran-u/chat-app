@@ -4,11 +4,14 @@ import { db } from "../config/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import Cookies from "js-cookie";
 import UserMenu from "./UserMenu";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
   const [userData, setUserData] = useState({});
   const [togglePopUp, setTogglePopUp] = useState(false);
   const userId = Cookies.get("userId");
+  const isDark = useSelector((state) => state.chats.isDark);
+
   useEffect(() => {
     getUserData();
   }, []);
@@ -33,7 +36,11 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex justify-between items-center bg-whiteBg p-1 rounded-lg relative">
+    <div
+      className={`flex justify-between items-center ${
+        isDark ? "bg-DarkBg" : "bg-whiteBg"
+      } p-1 rounded-lg relative`}
+    >
       <div className="flex items-center">
         <img src={userData.profilePic} className="w-9 h-9 rounded-full" />
         <p className="ml-1 text-username text-sm font-semibold">
