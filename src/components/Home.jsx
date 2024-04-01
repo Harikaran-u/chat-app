@@ -19,12 +19,12 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="h-screen chat-home flex flex-col items-center p-10">
+    <div className="min-h-screen chat-home flex flex-col items-center p-10">
       <Header />
       <div
         className={`${
           isDark ? "bg-DarkBg" : "bg-chatBannerBg"
-        } flex rounded-3xl shadow-2xl p-4 mt-2 w-full h-3/4 backdrop-blur-md`}
+        } flex rounded-3xl shadow-2xl p-4 mt-2 w-full custom-container-height backdrop-blur-md`}
       >
         <MembersBar />
         <ChatBox />

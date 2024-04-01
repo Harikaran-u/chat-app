@@ -1,5 +1,5 @@
 .app-bg {
-  background-image: url(https://wallpaperaccess.com/full/340545.jpg);
+  background-image: url(https://res.cloudinary.com/diuvnny8c/image/upload/v1711940028/2149316408_xmhkzm.jpg);
   background-size: cover;
   background-position: center;
 }
@@ -30,4 +30,8 @@
   font-size: 8px;
   font-weight: 600;
   color: #31363f;
+}
+
+.custom-container-height {
+  height: 500px;
 }

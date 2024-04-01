@@ -20,7 +20,7 @@ export default {
     backgroundColor: {
       appBg: "#B2A4FF",
       btnBg: "#03C988",
-      loginBg: "#F1F1F650",
+      loginBg: "#F1F1F690",
       whiteBg: "#fff",
       transparent: "transparent",
       googleBg: "#5356FF",

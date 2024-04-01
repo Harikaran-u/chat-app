@@ -93,14 +93,14 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center h-screen app-bg">
-      <div className="shadow-2xl p-5 rounded-md backdrop-blur-sm w-64 sm:w-3/5 md:w-2/5 border-2 border-black bg-loginBg">
-        <h1 className="flex items-center justify-center text-md sm:text-2xl font-bold text-title mb-2">
+      <div className="shadow-2xl p-4 md:p-8 rounded-md backdrop-blur-sm w-64 md:w-3/5 lg:w-2/5 bg-loginBg">
+        <h1 className="flex items-center justify-center text-md md:text-2xl font-bold text-title mb-2">
           Chat Hub <IoIosChatboxes className="ml-2" />
         </h1>
         <form className="flex flex-col" onSubmit={onSubmitUser}>
           <label
             htmlFor="user-name"
-            className="text-xs sm:text-sm font-bold text-label"
+            className="text-xs md:text-sm font-bold text-label"
           >
             Username
           </label>

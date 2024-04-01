@@ -86,7 +86,7 @@ const Users = () => {
     <div
       className={`${
         isDark ? "bg-DarkBg" : "bg-whiteBg"
-      } p-3 rounded-lg mt-2 h-5/6`}
+      } p-3 rounded-lg mt-2 h-full overflow-y-scroll hide-scroll-bar`}
     >
       <input
         type="search"
@@ -97,19 +97,21 @@ const Users = () => {
         value={userSearch}
         onChange={handleUserSearch}
       />
-      <p className="text-base font-semibold text-category mb-2">users</p>
+      <p className="text-base text-center font-semibold text-category mb-2 mt-2">
+        users
+      </p>
       {!isLoading && (
         <ul
           className={`${
             isDark ? "bg-DarkBg" : "bg-whiteBg"
-          } h-4/5 overflow-y-auto hide-scroll-bar p-1 rounded`}
+          } h-3/4 overflow-y-auto hide-scroll-bar p-1 rounded`}
         >
           {filteredUsersList !== null &&
             filteredUsersList.map((eachUser) => {
               return (
                 <li
                   key={eachUser.doc_id}
-                  className={`flex items-center justify-between rounded-md p-1 mb-2 border-b-2 border-b-gray-200 cursor-pointer border-solid ${
+                  className={`flex items-center justify-between rounded-md p-1 mb-1 border-b-2 border-b-gray-200 cursor-pointer border-solid ${
                     eachUser.doc_id === selectedUser.doc_id && "bg-selectUserBg"
                   }`}
                   onClick={() => handleSelectUser(eachUser)}

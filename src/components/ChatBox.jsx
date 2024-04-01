@@ -57,7 +57,7 @@ const ChatBox = () => {
 
       return () => unsubscribe();
     }
-  }, [db, msgSent]);
+  }, [db, msgSent, messageId]);
 
   const getFormattedDate = (timestamp) => {
     const date = new Date(timestamp);
@@ -111,7 +111,7 @@ const ChatBox = () => {
   };
 
   return (
-    <div className="rounded-lg ml-2 p-4 h-full chat-bg flex flex-col w-full relative">
+    <div className="rounded-lg ml-2 p-4 min-h-full chat-bg flex flex-col w-full relative">
       {isSelectedUser && (
         <div className="flex justify-center items-center rounded-3xl chat-info h-full w-full"></div>
       )}
@@ -152,7 +152,7 @@ const ChatBox = () => {
           <form
             className={`${
               isDark ? "bg-DarkBg" : "bg-whiteBg"
-            } flex items-center justify-between w-full rounded-md p-1 sticky top-3/4`}
+            } flex items-center justify-between w-full rounded-md p-1 sticky top-full`}
             onSubmit={handleUserInputSubmit}
           >
             <input
