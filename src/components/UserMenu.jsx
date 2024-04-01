@@ -12,8 +12,8 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { useNavigate, Link } from "react-router-dom";
 
-const UserMenu = (props) => {
-  // const { toggle } = props;
+const UserMenu = () => {
+  const [isError, setIsError] = useState(false);
   const isDark = useSelector((state) => state.chats.isDark);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const UserMenu = (props) => {
   const handleLogout = async () => {
     const userId = Cookies.get("userId");
     const result = window.confirm("Are you sure want to logout?");
-    const [isError, setIsError] = useState(false);
+
     if (result) {
       try {
         const docRef = doc(db, "users", userId);
