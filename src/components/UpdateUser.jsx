@@ -47,7 +47,6 @@ const UpdateUser = () => {
       } catch (error) {
         setError(true);
         setLoader(false);
-        console.log(error);
       }
     }
   };
@@ -66,7 +65,6 @@ const UpdateUser = () => {
         setLoader(false);
       } catch (error) {
         setError(true);
-        console.log("fire error", error);
       }
     }
   };

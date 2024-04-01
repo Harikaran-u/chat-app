@@ -33,6 +33,7 @@ const Login = () => {
 
   const onSubmitUser = (e) => {
     e.preventDefault();
+    setIsError(false);
     loginUser();
     setUsername("");
   };
@@ -56,9 +57,8 @@ const Login = () => {
         const userData = await addDoc(usersRef, userDoc);
         Cookies.set("userId", userData.id, { expires: 7 });
         navigate("/", { replace: true });
-        console.log("New user created successfully!");
       } catch (error) {
-        console.error("Error creating new user:", error);
+        setIsError(true);
       }
     } else {
       let userData = null;
@@ -72,9 +72,8 @@ const Login = () => {
           loginTime: new Date(),
         });
       } catch (error) {
-        console.log(error);
+        setIsError(true);
       }
-
       Cookies.set("userId", userData.id, { expires: 7 });
       navigate("/", { replace: true });
     }

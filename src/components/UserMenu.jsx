@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   MdLogout,
   MdLightMode,
@@ -21,6 +21,7 @@ const UserMenu = (props) => {
   const handleLogout = async () => {
     const userId = Cookies.get("userId");
     const result = window.confirm("Are you sure want to logout?");
+    const [isError, setIsError] = useState(false);
     if (result) {
       try {
         const docRef = doc(db, "users", userId);
@@ -32,7 +33,7 @@ const UserMenu = (props) => {
         dispatch(resetState());
         navigate("/login", { replace: true });
       } catch (error) {
-        console.log(error);
+        setIsError(true);
       }
     }
   };

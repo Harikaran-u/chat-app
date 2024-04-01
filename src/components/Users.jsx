@@ -12,6 +12,7 @@ const Users = () => {
   const [usersList, setUsersList] = useState([]);
   const [selectedUser, setSelectedUser] = useState({ doc_id: 0 });
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
   const isDark = useSelector((state) => state.chats.isDark);
   const dispatch = useDispatch();
 
@@ -36,7 +37,7 @@ const Users = () => {
       setUsersList([...usersData]);
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      setIsError(true);
     }
   };
 
@@ -55,7 +56,7 @@ const Users = () => {
         setUsersList([...usersData]);
         usersData = [];
       } else {
-        console.log("Document does not exist");
+        setIsError(true);
       }
     });
 

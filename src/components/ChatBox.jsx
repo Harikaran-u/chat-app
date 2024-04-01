@@ -24,6 +24,7 @@ const ChatBox = () => {
   const [currentUserId, setCurrentUserId] = useState("");
   const [selectedUserId, setSelectedUserId] = useState("");
   const [msgSent, setMsgSent] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [conversationList, setConversationList] = useState([]);
   const selectedUser = useSelector((state) => state.chats.selectedUser);
   const isDark = useSelector((state) => state.chats.isDark);
@@ -51,8 +52,6 @@ const ChatBox = () => {
       const unsubscribe = onSnapshot(documentRef, (docSnapshot) => {
         if (docSnapshot.exists()) {
           setConversationList(docSnapshot.data().messagesList);
-        } else {
-          console.log("Document does not exist");
         }
       });
 
@@ -74,7 +73,6 @@ const ChatBox = () => {
         setConversationList(messageDocSnap.data().messagesList);
       } else {
         setConversationList([]);
-        console.log("no messages found");
       }
     }
   };
@@ -100,7 +98,7 @@ const ChatBox = () => {
         });
       }
     } catch (error) {
-      console.log(error);
+      setIsError(true);
     }
   };
 
@@ -123,7 +121,7 @@ const ChatBox = () => {
         setMessageId(null);
         window.location.reload();
       } catch (error) {
-        console.log(error);
+        setIsError(true);
       }
     }
   };
