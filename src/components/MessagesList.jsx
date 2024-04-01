@@ -36,8 +36,10 @@ const MessagesList = (props) => {
                 : "self-end bg-senderBg rounded-br-sm rounded-tl-sm mt-2"
             } p-2 rounded-2xl flex flex-col items-end`}
           >
-            <span className="text-sm">{eachMsg.messageText}</span>
-            <span className="delivery-time">
+            <span className="text-xs sm:text-sm font-medium">
+              {eachMsg.messageText}
+            </span>
+            <span className="delivery-time font-medium">
               {getFormattedTime(eachMsg.createdAt)}
             </span>
           </li>

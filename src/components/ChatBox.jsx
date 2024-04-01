@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { FaTrashArrowUp } from "react-icons/fa6";
 import { IoSend } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import {
@@ -10,6 +10,7 @@ import {
   getDoc,
   setDoc,
   onSnapshot,
+  deleteDoc,
 } from "firebase/firestore";
 import { db } from "../config/firebase";
 import MessagesList from "./MessagesList";
@@ -110,6 +111,23 @@ const ChatBox = () => {
     setMsgSent(true);
   };
 
+  const handleDeleteChat = async () => {
+    const result = window.confirm(
+      "This will delete all message for everyone. Are you sure want to delete the chat?"
+    );
+    if (result) {
+      try {
+        const docRef = doc(db, "messages", messageId);
+        await deleteDoc(docRef);
+        setConversationList([]);
+        setMessageId(null);
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <div className="rounded-lg sm:ml-2 p-2 mt-2 sm:mt-0 sm:p-4 min-h-full xs-height chat-bg flex flex-col w-full relative">
       {isSelectedUser && (
@@ -142,9 +160,10 @@ const ChatBox = () => {
                 </p>
               </div>
             </div>
-            <BsThreeDotsVertical
+            <FaTrashArrowUp
               color="gray"
               className="cursor-pointer text-sm sm:text-base"
+              onClick={handleDeleteChat}
             />
           </div>
           <MessagesList conversationList={conversationList} />
