@@ -86,7 +86,7 @@ const Users = () => {
     <div
       className={`${
         isDark ? "bg-DarkBg" : "bg-whiteBg"
-      } p-3 rounded-lg mt-2 h-full overflow-y-scroll hide-scroll-bar`}
+      } p-2 rounded-lg mt-2 h-full overflow-auto hide-scroll-bar`}
     >
       <input
         type="search"
@@ -97,54 +97,50 @@ const Users = () => {
         value={userSearch}
         onChange={handleUserSearch}
       />
-      <p className="text-base text-center font-semibold text-category mb-2 mt-2">
-        users
-      </p>
+
       {!isLoading && (
         <ul
           className={`${
             isDark ? "bg-DarkBg" : "bg-whiteBg"
-          } h-3/4 overflow-y-auto hide-scroll-bar p-1 rounded`}
+          } overflow-auto hide-scroll-bar p-1 rounded flex sm:flex-col sm:h-full sm:border-b-0 border-b-2 border-solid border-b-cyan-400`}
         >
           {filteredUsersList !== null &&
             filteredUsersList.map((eachUser) => {
               return (
                 <li
                   key={eachUser.doc_id}
-                  className={`flex items-center justify-between rounded-md p-1 mb-1 border-b-2 border-b-gray-200 cursor-pointer border-solid ${
-                    eachUser.doc_id === selectedUser.doc_id && "bg-selectUserBg"
+                  className={`flex flex-col items-center justify-between p-1  mr-2 rounded-full sm:flex-row sm:rounded-md sm:p-1 sm:mt-1 sm:mb-1 sm:border-b-2 sm:border-solid sm:border-b-gray-200 cursor-pointer ${
+                    eachUser.doc_id === selectedUser.doc_id &&
+                    "sm:bg-selectUserBg"
                   }`}
                   onClick={() => handleSelectUser(eachUser)}
                 >
-                  <div className="flex ">
+                  <div className="flex flex-col items-center justify-center sm:flex-row">
                     <img
                       src={eachUser.profilePic}
-                      className="w-9 h-9 rounded-full"
+                      className="w-7 h-7 sm:w-9 sm:h-9 rounded-full"
                     />
-                    <div className="flex flex-col ml-1">
+                    <div className="ml-1">
                       <p
                         className={`${
                           eachUser.doc_id === selectedUser.doc_id
-                            ? "text-textLight"
-                            : "text-personName"
-                        } font-semibold text-sm`}
+                            ? "sm:text-textLight text-online"
+                            : "sm:text-personName text-xsDevice"
+                        } font-semibold text-xs sm:text-sm`}
                       >
                         {eachUser.username}
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center">
-                    <p
-                      className={`text-xs font-semibold mr-1 text-lastSeen  ${
-                        eachUser.isOnline
-                          ? "animate-pulse text-onlineDot"
-                          : "text-offlineDot"
-                      }`}
-                    >
-                      <GoDotFill size="20" />
-                    </p>
-                    {/* <p className="text-xs text-lastSeen">{eachUser.time}</p> */}
-                  </div>
+                  <p
+                    className={`hidden sm:block text-xs font-semibold mr-1 text-lastSeen  ${
+                      eachUser.isOnline
+                        ? "animate-pulse text-onlineDot"
+                        : "text-offlineDot"
+                    }`}
+                  >
+                    <GoDotFill className="text-sm sm:text-base" />
+                  </p>
                 </li>
               );
             })}

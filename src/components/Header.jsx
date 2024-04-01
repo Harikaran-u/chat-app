@@ -9,7 +9,7 @@ const Header = () => {
     <h1
       className={`${
         isDark ? "bg-DarkBg" : "bg-whiteBg"
-      } flex items-center justify-center p-2 text-sm sm:text-4xl font-bold text-title mb-2 rounded-tr-3xl rounded-bl-3xl`}
+      } sm:flex hidden items-center justify-center p-2 text-sm sm:text-4xl font-bold text-title mb-2 rounded-tr-3xl rounded-bl-3xl`}
     >
       Chat Hub <IoIosChatboxes className="ml-2" />
     </h1>

@@ -111,9 +111,9 @@ const ChatBox = () => {
   };
 
   return (
-    <div className="rounded-lg ml-2 p-4 min-h-full chat-bg flex flex-col w-full relative">
+    <div className="rounded-lg sm:ml-2 p-2 mt-2 sm:mt-0 sm:p-4 min-h-full xs-height chat-bg flex flex-col w-full relative">
       {isSelectedUser && (
-        <div className="flex justify-center items-center rounded-3xl chat-info h-full w-full"></div>
+        <div className="rounded-3xl chat-info h-96 sm:h-full w-full"></div>
       )}
       {!isSelectedUser && (
         <>
@@ -125,16 +125,16 @@ const ChatBox = () => {
             <div className="flex items-center ml-1">
               <img
                 src={selectedUser.profilePic}
-                className="w-9 h-9 rounded-full"
+                className="h-7 w-7 sm:w-9 sm:h-9 rounded-full"
               />
               <div className="flex flex-col ml-1">
-                <p className="text-username text-sm font-semibold">
+                <p className="text-username text-xs sm:text-sm font-semibold">
                   {selectedUser.username}
                 </p>
                 <p
                   className={`${
                     selectedUser.isOnline ? "text-online" : "text-offline"
-                  } text-xs font-semibold`}
+                  } text-light sm:text-xs font-semibold`}
                 >
                   {selectedUser.isOnline
                     ? "online"
@@ -144,8 +144,7 @@ const ChatBox = () => {
             </div>
             <BsThreeDotsVertical
               color="gray"
-              size="20"
-              className="cursor-pointer"
+              className="cursor-pointer text-sm sm:text-base"
             />
           </div>
           <MessagesList conversationList={conversationList} />
@@ -165,11 +164,11 @@ const ChatBox = () => {
               onChange={(e) => setUserInputMsg(e.target.value)}
             />
             <button
-              className="bg-sendBtnBg p-1 w-12 rounded flex justify-center disabled:bg-opacity-20 disabled:cursor-not-allowed"
+              className="bg-sendBtnBg p-1 w-8 sm:w-12 rounded flex justify-center disabled:bg-opacity-20 disabled:cursor-not-allowed"
               type="submit"
               disabled={userInputMsg === ""}
             >
-              <IoSend size="20" />
+              <IoSend className="text-base sm:text-lg" />
             </button>
           </form>
         </>

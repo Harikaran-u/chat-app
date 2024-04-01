@@ -10,3 +10,22 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+
+@layer utilities {
+  .w-large {
+    width: 576px;
+  }
+  .sm-height {
+    height: 600px;
+  }
+  .xs-height {
+    min-height: 300px;
+    max-height: 600px;
+  }
+  .underline-hilight {
+    text-decoration-color: "#8B93FF";
+  }
+  .text-light {
+    font-size: 8px;
+  }
+}
